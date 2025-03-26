@@ -8,24 +8,6 @@ app.use(express.urlencoded ({ extended: true }));
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
-// Handle GET request to fetch users
-app.get('/users', async (req, res) => {
-    setTimeout(async ()=> {
-    const limit = +req.query.limit || 10;
-    const response = await fetch(
-    `https://jsonplaceholder.typicode.com/users?_limit=${limit}`
-    );
-    const users = await response.json()
-    res.send(`
-    <h2>Users</h2>
-    <ul class="list-group">
-    ${users.map((user)=>`<li class="list-group-item">${user.name}</li>`).join('')}
-    </ul>
-    `)
-    },2000)
-   });
-   
-
    app.post('/calculate',(req,res)=>{
     const height = parseFloat(req.body.height);
     const weight = parseFloat(req.body.weight);
@@ -36,7 +18,7 @@ app.get('/users', async (req, res) => {
    })
 
 // Start the server
-app.listen (3000, ()=>{
-    console.log('Server listening on port 3000');
+app.listen (3002, ()=>{
+    console.log('Server listening on port 3002');
 });
 

@@ -11,28 +11,32 @@ app.use(express.urlencoded({ extended: true }));
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
-app.get('/get-price', async (req, res) => {
-    try {
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-        console.log('request made');
-        if (!response.ok) {
-            throw new Error(`API responded with status: ${response.status}`);
-        }
-        const data = await response.json();
-        const price = data.bitcoin.usd;
-        res.send(`<div class="price-display success">$${price.toLocaleString()}</div>`);
-    } catch (error) {
-        console.error('Price fetch error:', error);
-        res.send(`
-            <div class="price-display error">
-                Unable to fetch price
-                <span class="error-details">🔄 Retrying...</span>
-            </div>
-        `);
+// Handle POST request for contacts search
+app.post('/search', async (req, res) => {
+    const searchTerm = req.body.search.toLowerCase();
+    if (!searchTerm) {
+        return res.send('<tr></tr>');
     }
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const users = await response.json();
+
+    const searchResults = users.filter((user) => {
+        const name = user.name.toLowerCase();
+        const email = user.email.toLowerCase();
+        return name.includes(searchTerm) || email.includes(searchTerm)
+    })
+    const searchResultHtml = searchResults
+        .map((user) => `
+        <tr>
+        <td>${user.name}</td>
+        <td>${user.email}</td>
+        </tr>
+        `)
+        .join('');
+    res.send(searchResultHtml);
 });
 
 // Start the server
-app.listen(3001, () => {
-    console.log('Server listening on port 3001');
+app.listen(3000, () => {
+    console.log('Server listening on port 3000');
 });
