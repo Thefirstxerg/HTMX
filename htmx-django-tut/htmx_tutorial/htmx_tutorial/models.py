@@ -1,11 +1,12 @@
 from django.db import models
 
-# Create your models here.
-
-class SampleModel(models.Model):
-    name = models.CharField(max_length=50)
+class UserInfo(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
     email = models.EmailField()
-    favourite_color = models.CharField(max_length=20)
+    favorite_framework = models.CharField(max_length=100)
+    experience = models.IntegerField()
+    development_area = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.email})"
