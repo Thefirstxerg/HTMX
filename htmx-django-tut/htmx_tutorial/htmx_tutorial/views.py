@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 import json
 from urllib.parse import parse_qs
-from .models import UserInfo
+# from .models import UserInfo
 
 def index(request):
     return render(request, 'index.html')
@@ -28,7 +28,6 @@ def edit_profile(request, id):
         """)
     return HttpResponse("Direct access not allowed")
 
-@csrf_exempt
 @require_http_methods(["PUT", "POST"])
 def update_profile(request, id):
     if request.headers.get('HX-Request'):
